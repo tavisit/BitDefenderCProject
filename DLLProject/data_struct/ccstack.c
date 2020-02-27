@@ -65,6 +65,11 @@ int StPush(CC_STACK *Stack, int Value)
     {
         return -1;
     }
+    if (&Value == NULL)
+    {
+        return -1;
+    }
+
     CC_VECTOR *vect = Stack->Vector;
 
     int retVal = VecInsertHead(vect, Value);

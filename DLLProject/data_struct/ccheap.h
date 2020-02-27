@@ -3,6 +3,9 @@
 #include "ccvector.h"
 #include "common.h"
 
+#define heapifyUp(X) Position > 0 && heap->Data[Position] X heap->Data[(Position - 1) >> 1]
+#define heapifyDown(X) heap->Data[(Position << 1) + 2] X heap->Data[nextElement] && (Position << 1) + 2 < heap->Size
+
 typedef struct _CC_HEAP {
     int *Data;
     int Size;

@@ -298,10 +298,14 @@ int VecAppend(CC_VECTOR *DestVector, CC_VECTOR *SrcVector)
 {
     CC_UNREFERENCED_PARAMETER(DestVector);
     CC_UNREFERENCED_PARAMETER(SrcVector);
-    if (DestVector->Count >= DestVector->Count+SrcVector->Count)
+    if (DestVector->Size <= DestVector->Count+SrcVector->Count)
     {
         DestVector->Array = realloc(DestVector->Array, sizeof(int)*(DestVector->Count + SrcVector->Count));
-        return -1;
+        if (DestVector == NULL)
+        {
+            return -1;
+        }
+        DestVector->Size = DestVector->Count + SrcVector->Count;
     }
 
     for (int i = 0; i < SrcVector->Size; i++) {

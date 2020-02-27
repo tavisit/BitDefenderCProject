@@ -1,6 +1,8 @@
 #include "ccheap.h"
 #include "common.h"
 
+
+
 int HpCreateMaxHeap(CC_HEAP **MaxHeap, CC_VECTOR* InitialElements)
 {
     CC_UNREFERENCED_PARAMETER(MaxHeap);
@@ -62,14 +64,12 @@ int HpCreateMinHeap(CC_HEAP **MinHeap, CC_VECTOR* InitialElements)
     auxMinHeap->Type = false;
     auxMinHeap->Data = (int *)malloc(sizeof(int));
     auxMinHeap->Size = 0;
-    
-    if (InitialElements != NULL)
+
+    for (int i = 0; InitialElements != NULL && i < InitialElements->Size; ++i)
     {
-        for (int i = 0; i < InitialElements->Size; ++i)
-        {
-            HpInsert(auxMinHeap, InitialElements->Array[i]);
-        }
+        HpInsert(auxMinHeap, InitialElements->Array[i]);
     }
+ 
 
     *MinHeap = auxMinHeap;
     
@@ -232,29 +232,22 @@ int HpSortToVector(CC_HEAP *Heap, CC_VECTOR* SortedVector)
         return 0;
     }
 
-    if (Heap->Type == false)
+
+    while (HpGetElementCount(Heap) != 0)
     {
-        while (HpGetElementCount(Heap) != 0)
+        int popValue, retVal;
+        retVal = HpPopExtreme(Heap, &popValue);
+        if (retVal == -1)
         {
-            int popValue, retVal;
-            retVal = HpPopExtreme(Heap, &popValue);
-            if (retVal == -1)
-            {
-                return -1;
-            }
+            return -1;
+        }
+
+        if (Heap->Type == false)
+        {
             VecInsertTail(SortedVector, popValue);
         }
-    }
-    else
-    {
-        while (HpGetElementCount(Heap) != 0)
+        if (Heap->Type == true)
         {
-            int popValue, retVal;
-            retVal = HpPopExtreme(Heap, &popValue);
-            if (retVal == -1)
-            {
-                return -1;
-            }
             VecInsertHead(SortedVector, popValue);
         }
     }
@@ -268,56 +261,35 @@ int HpSortToVector(CC_HEAP *Heap, CC_VECTOR* SortedVector)
 }
 
 void HeapifyDown(CC_HEAP *heap, int Position) {
-    int nextElement = 0;
 
-    if (heap->Type == false)
+
+    int nextElement = 0;
+    while (nextElement != -1)
     {
-        while (nextElement != -1)
+        nextElement = -1;
+        if ((Position << 1) + 1 < heap->Size)
         {
-            nextElement = -1;
-            if ((Position << 1) + 1 < heap->Size)
+            nextElement = (Position << 1) + 1;
+            if (heapifyDown(<) && heap->Type == false)
             {
-                nextElement = (Position << 1) + 1;
-                if (heap->Data[(Position << 1) + 2] < heap->Data[nextElement] && (Position << 1) + 2 < heap->Size)
-                {
-                    nextElement = (Position << 1) + 2;
-                }
-                if (heap->Data[nextElement] > heap->Data[Position])
-                {
-                    nextElement = -1;
-                }
+                nextElement = (Position << 1) + 2;
             }
-            if (nextElement != -1)
+            if (heapifyDown(>) && heap->Type == true)
             {
-                swapValues(&heap->Data[nextElement], &heap->Data[Position]);
-                Position = nextElement;
+                nextElement = (Position << 1) + 2;
+            }
+            if (heap->Data[nextElement] < heap->Data[Position])
+            {
+                nextElement = -1;
             }
         }
-    }
-    else
-    {
-        while (nextElement != -1)
+        if (nextElement != -1)
         {
-            nextElement = -1;
-            if ((Position << 1) + 1 < heap->Size)
-            {
-                nextElement = (Position << 1) + 1;
-                if (heap->Data[(Position << 1) + 2] > heap->Data[nextElement] && (Position << 1) + 2 < heap->Size)
-                {
-                    nextElement = (Position << 1) + 2;
-                }
-                if (heap->Data[nextElement] < heap->Data[Position])
-                {
-                    nextElement = -1;
-                }
-            }
-            if (nextElement != -1)
-            {
-                swapValues(&heap->Data[nextElement], &heap->Data[Position]);
-                Position = nextElement;
-            }
+            swapValues(&heap->Data[nextElement], &heap->Data[Position]);
+            Position = nextElement;
         }
     }
+    
 }
 void HeapifyUp(CC_HEAP *heap, int Position) {
 
@@ -325,20 +297,17 @@ void HeapifyUp(CC_HEAP *heap, int Position) {
     {
         return;
     }
-    if (heap->Type == false)
+
+    while (heapifyUp(< )&&heap->Type == false)
     {
-        while (Position > 0 && heap->Data[Position] < heap->Data[(Position - 1) >> 1])
-        {
-            swapValues(&heap->Data[Position], &heap->Data[(Position - 1) >> 1]);
-            Position = (Position - 1) >> 1;
-        }
+        swapValues(&heap->Data[Position], &heap->Data[(Position - 1) >> 1]);
+        Position = (Position - 1) >> 1;
     }
-    else
+    
+    while (heapifyUp(>) && heap->Type == true)
     {
-        while (Position > 0 && heap->Data[Position] > heap->Data[(Position - 1) >> 1])
-        {
-            swapValues(&heap->Data[Position], &heap->Data[(Position - 1) >> 1]);
-            Position = (Position - 1) >> 1;
-        }
+        swapValues(&heap->Data[Position], &heap->Data[(Position - 1) >> 1]);
+        Position = (Position - 1) >> 1;
     }
+    
 }

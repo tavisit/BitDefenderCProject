@@ -7,14 +7,17 @@ int TreeCreate(CC_TREE **Tree)
     CC_UNREFERENCED_PARAMETER(Tree);
 
     CC_TREE *auxTree = (CC_TREE*)malloc(sizeof(CC_TREE));
+    
     if (auxTree == NULL)
     {
         return -1;
     }
+
     auxTree->data = INT_MIN;
     auxTree->left = NULL;
     auxTree->right = NULL;
     *Tree = auxTree;
+    
     if (Tree == NULL)
     {
         return -1;
@@ -59,6 +62,10 @@ int TreeInsert(CC_TREE *Tree, int Value)
     CC_UNREFERENCED_PARAMETER(Tree);
     CC_UNREFERENCED_PARAMETER(Value);
 
+    if (NULL == Tree)
+    {
+        return -1;
+    }
     if (NULL == &Value)
     {
         return -1;
@@ -80,7 +87,10 @@ int TreeRemove(CC_TREE *Tree, int Value)
     CC_UNREFERENCED_PARAMETER(Value);
 
 
-
+    if (NULL == Tree)
+    {
+        return -1;
+    }
     if (&Value == NULL)
     {
         return -1;
@@ -197,6 +207,7 @@ int TreeGetNthPreorder(CC_TREE *Tree, int Index, int *Value)
     CC_UNREFERENCED_PARAMETER(Tree);
     CC_UNREFERENCED_PARAMETER(Index);
     CC_UNREFERENCED_PARAMETER(Value);
+
     if (Tree == NULL)
     {
         return -1;
@@ -212,6 +223,7 @@ int TreeGetNthPreorder(CC_TREE *Tree, int Index, int *Value)
 
     int indexPreOrder = 0;
     PreOrder(Tree, Index, Value, &indexPreOrder);
+
     return 0;
 }
 
@@ -296,7 +308,7 @@ CC_TREE * removeElement(CC_TREE *Tree, int Value)
             }
             else
             {
-                //data to be deleted is found
+                
                 if (Tree->right != NULL)
                 {
                     auxTree = Tree->right;

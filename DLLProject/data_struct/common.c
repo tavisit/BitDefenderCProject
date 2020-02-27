@@ -9,6 +9,9 @@
   second  --> second number to be swapped */
 void swapValues(int* first, int* second)
 {
+    if (first == NULL || second == NULL)
+        return;
+
     int temp = *first;
     *first = *second;
     *second = temp;
@@ -19,6 +22,11 @@ void swapValues(int* first, int* second)
   high  --> Ending index */
 int partition(int *Vector, int low, int high)
 {
+    if (Vector == NULL)
+    {
+        return 0;
+    }
+
     int pivot = Vector[high];    // pivot 
     int i = (low - 1);  // Index of smaller element 
 
@@ -41,6 +49,11 @@ int partition(int *Vector, int low, int high)
   high  --> Ending index */
 void sortCCVector(int *Vector, int low, int high)
 {
+    if (Vector == NULL)
+    {
+        return;
+    }
+
     if (low < high)
     {
         /* pi is partitioning index, Vector[p] is now
@@ -58,6 +71,10 @@ void sortCCVector(int *Vector, int low, int high)
   low  --> Starting index,
   high  --> Ending index */
 void reverseVector(int *Vector,int low, int high) {
+    if (Vector == NULL)
+    {
+        return;
+    }
     high--;
     while (low < high)
     {
@@ -102,4 +119,5 @@ void printPostorder(CC_TREE * node)
     printPostorder(node->left);
     printPostorder(node->right);
     printf("%d ", node->data);
-}
+}
+

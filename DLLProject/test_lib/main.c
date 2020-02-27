@@ -352,8 +352,8 @@ int TestVector()
     int retVal = -1;
     int foundVal = 0;
     CC_VECTOR* usedVector = NULL;
-    retVal = VecCreate(&usedVector);
 
+    retVal = VecCreate(&usedVector);
     if (0 != retVal)
     {
         printf("VecCreate failed!\n");
@@ -426,7 +426,14 @@ int TestVector()
         retVal = -1;
         goto cleanup;
     }
-
+    CC_VECTOR *vector2;
+    VecCreate(&vector2);
+    for (int i = 0; i <= 200; i++) {
+        VecInsertHead(usedVector, i);
+        VecInsertHead(vector2, i*2);
+    }
+    VecAppend(usedVector, vector2);
+    VecGetCount(usedVector);
     
 
 cleanup:
