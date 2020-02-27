@@ -84,7 +84,7 @@ int TestTree()
         goto cleanup;
     }
 
-    retVal = TreeInsert(usedTree, 30);
+    retVal = TreeInsert(usedTree, 20);
     if (0 != retVal)
     {
         printf("TreeInsert failed!\n");
@@ -103,7 +103,6 @@ int TestTree()
         printf("TreeRemove failed!\n");
         goto cleanup;
     }
-
     if (0 != TreeContains(usedTree, 20))
     {
         
@@ -118,6 +117,14 @@ int TestTree()
         retVal = -1;
         goto cleanup;
     }
+
+    int vector[] = { 13, 3, 4, 12, 14, 10, 5, 1, 8, 2, 7, 9, 11, 6, 18 };
+    int usedValue = 0;
+    for (int i = 0; i < 15; i++)
+        TreeInsert(usedTree, vector[i]);
+    printPostorder(usedTree);
+    TreeGetNthPostorder(usedTree, 5, &usedValue);
+    printf("\n%d\n", usedValue);
 
 cleanup:
     if (NULL != usedTree)
@@ -419,6 +426,8 @@ int TestVector()
         retVal = -1;
         goto cleanup;
     }
+
+    
 
 cleanup:
     if (NULL != usedVector)

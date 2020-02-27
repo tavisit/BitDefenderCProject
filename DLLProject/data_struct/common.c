@@ -1,6 +1,7 @@
 #pragma once
 #include "common.h"
 #include "ccvector.h"
+#include "cctree.h"
 #include "string.h"
 
 /* The main function that implements the swapping of values
@@ -75,4 +76,30 @@ int indexValid(int Index, int Count) {
     return 1;
 
 }
-
+void printPreorder(CC_TREE* node) 
+{
+    if (node == NULL) {
+        return;
+    }
+    printf("%d ", node->data);
+    printPreorder(node->left);
+    printPreorder(node->right);
+}
+void printInorder(CC_TREE * node) 
+{
+    if (node == NULL) {
+        return;
+    }
+    printInorder(node->left);
+    printf("%d ", node->data);
+    printInorder(node->right);
+}
+void printPostorder(CC_TREE * node) 
+{
+    if (node == NULL) {
+        return;
+    }
+    printPostorder(node->left);
+    printPostorder(node->right);
+    printf("%d ", node->data);
+}

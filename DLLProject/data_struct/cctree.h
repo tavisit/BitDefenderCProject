@@ -42,3 +42,7 @@ unsigned int CountingNodes(CC_TREE *Tree);
 //CC_TREE * functions to perform the removal of an element and the insertion of an element
 CC_TREE* removeElement(CC_TREE *T, int Value);
 CC_TREE* insertElement(CC_TREE *T, int Value);
+
+void PostOrder(CC_TREE *Tree, int Index, int *Value, int *IndexPostOrder);
+void InOrder(CC_TREE *Tree, int Index, int *Value, int *IndexInOrder);
+void PreOrder(CC_TREE *Tree, int Index, int *Value, int *IndexPreOrder);

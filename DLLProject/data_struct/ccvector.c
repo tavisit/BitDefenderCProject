@@ -71,7 +71,12 @@ int VecInsertTail(CC_VECTOR *Vector, int Value)
     if (Vector->Count >= Vector->Size)
     {
         Vector->Array = realloc(Vector->Array, sizeof(int)*(Vector->Count + 1));
-        return -1;
+        
+        if (Vector->Array == NULL)
+        {
+            return -1;
+        }
+        Vector->Size = Vector->Count + 1;
     }
 
     Vector->Array[Vector->Count] = Value;
@@ -97,7 +102,12 @@ int VecInsertHead(CC_VECTOR *Vector, int Value)
     if (Vector->Count >= Vector->Size)
     {
         Vector->Array = realloc(Vector->Array, sizeof(int)*(Vector->Count + 1));
-        return -1;
+
+        if (Vector->Array == NULL)
+        {
+            return -1;
+        }
+        Vector->Size = Vector->Count + 1;
     }
 
     for (int i = Vector->Count-1; i >= 0; i--)
@@ -132,7 +142,12 @@ int VecInsertAfterIndex(CC_VECTOR *Vector, int Index, int Value)
     if (Vector->Count >= Vector->Size)
     {
         Vector->Array = realloc(Vector->Array, sizeof(int)*(Vector->Count + 1));
-        return -1;
+
+        if (Vector->Array == NULL)
+        {
+            return -1;
+        }
+        Vector->Size = Vector->Count + 1;
     }
     if (Index == -1) {
         int retVal = VecInsertHead(Vector, Value);
@@ -172,7 +187,12 @@ int VecRemoveByIndex(CC_VECTOR *Vector, int Index)
     if (Vector->Count >= Vector->Size)
     {
         Vector->Array = realloc(Vector->Array, sizeof(int)*(Vector->Count + 1));
-        return -1;
+
+        if (Vector->Array == NULL)
+        {
+            return -1;
+        }
+        Vector->Size = Vector->Count + 1;
     }
 
     if (!indexValid(Index, Vector->Count)) return -1;
@@ -226,7 +246,13 @@ int VecGetCount(CC_VECTOR *Vector)
     if (Vector->Count >= Vector->Size)
     {
         Vector->Array = realloc(Vector->Array, sizeof(int)*(Vector->Count + 1));
-        return -1;
+
+        if (Vector->Array == NULL)
+        {
+            return -1;
+        }
+        Vector->Size = Vector->Count + 1;
+
     }
 
     return Vector->Count;
@@ -256,7 +282,12 @@ int VecSort(CC_VECTOR *Vector)
     if (Vector->Count >= Vector->Size)
     {
         Vector->Array = realloc(Vector->Array, sizeof(int)*(Vector->Count + 1));
-        return -1;
+
+        if (Vector->Array == NULL)
+        {
+            return -1;
+        }
+        Vector->Size = Vector->Count + 1;
     }
     sortCCVector(Vector->Array, 0, Vector->Size-1);
     reverseVector(Vector->Array,0,Vector->Size);

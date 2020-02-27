@@ -1,10 +1,12 @@
 #pragma once
 
 #include "ccvector.h"
+#include "common.h"
 
-typedef struct _CC_HEAP{
-    // Members
-    int PlaceHolder; // placeholder to be removed when actual implementation is added
+typedef struct _CC_HEAP {
+    int *Data;
+    int Size;
+    boolean Type; //false for min-heap, true for max-heap
 } CC_HEAP;
 
 // HpCreateMaxHeap and HpCreateMinHeap should create a max heap or a min heap,
@@ -33,3 +35,6 @@ int HpGetElementCount(CC_HEAP *Heap);
 // HpSortToVector should construct and return (in the SortedVector parameter) a vector
 // sorted in increasing order containing all the elements present in the heap
 int HpSortToVector(CC_HEAP *Heap, CC_VECTOR* SortedVector);
+
+void HeapifyDown(CC_HEAP *Heap, int Position);
+void HeapifyUp(CC_HEAP *Heap, int Position);

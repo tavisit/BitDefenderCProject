@@ -210,20 +210,8 @@ int TreeGetNthPreorder(CC_TREE *Tree, int Index, int *Value)
         return -1;
     }
 
-    static int count = 0;
-    if (count <= Index) {
-
-        count++;
-
-        if (count == Index)
-        {
-            *Value = Tree->data;
-        }
-
-        TreeGetNthInorder(Tree->left, Index, Value);
-
-        TreeGetNthInorder(Tree->right, Index, Value);
-    }
+    int indexPreOrder = 0;
+    PreOrder(Tree, Index, Value, &indexPreOrder);
     return 0;
 }
 
@@ -245,19 +233,8 @@ int TreeGetNthInorder(CC_TREE *Tree, int Index, int *Value)
         return -1;
     }
 
-    static int count = 0;
-    if (count <= Index) {
-
-        TreeGetNthInorder(Tree->left, Index, Value);
-        count++;
-
-        if (count == Index)
-        {
-            *Value = Tree->data;
-        }
-
-        TreeGetNthInorder(Tree->right, Index, Value);
-    }
+    int IndexInOrder = 0;
+    InOrder(Tree, Index, Value, &IndexInOrder);
 
     return 0;
 
@@ -281,18 +258,9 @@ int TreeGetNthPostorder(CC_TREE *Tree, int Index, int *Value)
         return -1;
     }
 
-    static int count = 0;
-    if (count <= Index) {
+    int indexPostOrder = 0;
+    PostOrder(Tree, Index, Value, &indexPostOrder);
 
-        TreeGetNthInorder(Tree->left, Index, Value);
-        TreeGetNthInorder(Tree->right, Index, Value);
-        count++;
-
-        if (count == Index)
-        {
-            *Value = Tree->data;
-        }
-    }
     return 0;
 }
 
@@ -384,4 +352,56 @@ CC_TREE * insertElement(CC_TREE *Tree, int Value)
     Tree->height = TreeGetHeight(Tree);
 
     return(Tree);
+}
+
+void PreOrder(CC_TREE *Tree, int Index, int *Value, int *IndexPreOrder)
+{
+    if (Tree == NULL)
+    {
+        return;
+    }
+    *IndexPreOrder = *IndexPreOrder + 1;
+    if (*IndexPreOrder == Index)
+    {
+        *Value = Tree->data;
+        return;
+    }
+
+    PreOrder(Tree->left, Index, Value, IndexPreOrder);
+    PreOrder(Tree->right, Index, Value, IndexPreOrder);
+    return;
+}
+
+void InOrder(CC_TREE *Tree, int Index, int *Value, int *IndexInOrder)
+{
+    if (Tree == NULL)
+    {
+        return;
+    }
+    InOrder(Tree->left, Index, Value, IndexInOrder);
+    *IndexInOrder = *IndexInOrder + 1;
+    if (*IndexInOrder == Index)
+    {
+        *Value = Tree->data;
+        return;
+    }
+    InOrder(Tree->right, Index, Value, IndexInOrder);
+    return;
+}
+
+void PostOrder(CC_TREE *Tree, int Index, int *Value, int *IndexPostOrder)
+{
+    if (Tree == NULL)
+    {
+        return;
+    }
+    PostOrder(Tree->left, Index, Value, IndexPostOrder);
+    PostOrder(Tree->right, Index, Value, IndexPostOrder);
+    *IndexPostOrder = *IndexPostOrder + 1;
+    if (*IndexPostOrder == Index)
+    {
+        *Value = Tree->data;
+        return;
+    }
+    return;
 }

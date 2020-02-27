@@ -1,8 +1,9 @@
 #pragma once
 
 #include "stdlib.h"
+#include "stdio.h"
 #include "ccvector.h"
-
+#include "cctree.h"
 #define CC_UNREFERENCED_PARAMETER(X) X
 
 typedef enum booleanType { false, true } boolean;
@@ -19,3 +20,7 @@ boolean isNumber(char *string);
 
 // Verify if the index input is valid
 int indexValid(int Index, int Count);
+
+void printPreorder(CC_TREE* node);
+void printInorder(CC_TREE* node);
+void printPostorder(CC_TREE* node);
