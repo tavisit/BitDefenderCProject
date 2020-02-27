@@ -147,22 +147,16 @@ int HpRemove(CC_HEAP *Heap, int Value)
         return 0;
     }
 
-    boolean countingFinished = true;
-    while (countingFinished)
+    for (int i = 0; i < Heap->Size; ++i)
     {
-        countingFinished = false;
-        for (int i = 0; i < Heap->Size; ++i)
+        if (Heap->Data[i] == Value)
         {
-            if (Heap->Data[i] == Value)
-            {
-                countingFinished = true;
-                swapValues(&Heap->Data[i], &Heap->Data[--Heap->Size]);
-                HeapifyUp(Heap, i);
-                HeapifyDown(Heap, i);
-                return 0;
-            }
+            swapValues(&Heap->Data[i], &Heap->Data[--Heap->Size]);
+            HeapifyUp(Heap, i);
+            HeapifyDown(Heap, i);
         }
     }
+
     return 0;
 }
 

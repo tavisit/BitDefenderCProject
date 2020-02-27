@@ -171,7 +171,7 @@ int TestHeap()
         retVal = -1;
         goto cleanup;
     }
-
+    HpInsert(usedHeap, 5);
     retVal = HpGetExtreme(usedHeap, &foundVal);
     if (0 != retVal)
     {
@@ -179,12 +179,20 @@ int TestHeap()
         goto cleanup;
     }
 
-    if (10 != foundVal)
+    if (5 != foundVal)
     {
         printf("Invalid minimum value returned!");
         retVal = -1;
         goto cleanup;
     }
+    
+    HpInsert(usedHeap, 30);
+    HpInsert(usedHeap, 20);
+    HpInsert(usedHeap, 300);
+    HpRemove(usedHeap, 20);
+    HpGetElementCount(usedHeap);
+   
+
 
 cleanup:
     if (NULL != usedHeap)
