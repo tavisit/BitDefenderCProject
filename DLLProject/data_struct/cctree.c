@@ -16,6 +16,7 @@ int TreeCreate(CC_TREE **Tree)
     auxTree->data = INT_MIN;
     auxTree->left = NULL;
     auxTree->right = NULL;
+    auxTree->multiplicity = 0;
     *Tree = auxTree;
     
     if (Tree == NULL)
@@ -38,16 +39,13 @@ int TreeDestroy(CC_TREE **Tree)
     CC_TREE *Tr = *Tree;
 
     Tr->data = 0;
+    Tr->multiplicity = 0;
 
     if (Tr->left != NULL)TreeDestroy(&Tr->left);
     if (Tr->right != NULL)TreeDestroy(&Tr->right);
 
     free(Tr->left);
     free(Tr->right);
-
-    Tr->left = NULL;
-    Tr->right = NULL;
-
 
     free(Tr);
 
@@ -97,12 +95,19 @@ int TreeRemove(CC_TREE *Tree, int Value)
     }
     if (Tree->left == NULL && Tree->right == NULL)
     {
-        int retVal = TreeClear(Tree);
-        return retVal;
+        if (Tree->data == Value) {
+            int retVal = TreeClear(Tree);
+            return retVal;
+        }
+        return 0;
     }
     else
     {
         Tree = removeElement(Tree, Value);
+        if (Tree == NULL || Tree->data == -572662307)
+        {
+            TreeCreate(&Tree);
+        }
     }
 
     if (Tree != NULL)
@@ -118,39 +123,42 @@ int TreeContains(CC_TREE *Tree, int Value)
     CC_UNREFERENCED_PARAMETER(Value);
     if (Tree == NULL)
     {
-        return -1;
+        return 0;
     }
     if (Tree->data == Value)
     {
         return 1;
     }
-    else
+    
+    CC_TREE *auxTree = Tree;
+    while(NULL != auxTree)
     {
-        if (Tree->data > Value && Tree->left != NULL)
+        if (auxTree->data > Value)
         {
-            return TreeContains(Tree->left, Value);
+            auxTree = auxTree->left;
 
         }
-        else if (Tree->data < Value && Tree->right != NULL)
+        else if (auxTree->data < Value )
         {
-            return TreeContains(Tree->right, Value);
+            auxTree = auxTree->right;
         }
         else
         {
-            return 0;
+            return 1;
         }
     }
+    return 0;
 
 }
 
 int TreeGetCount(CC_TREE *Tree)
 {
     CC_UNREFERENCED_PARAMETER(Tree);
-    if (NULL == Tree)
+    if (NULL == Tree || Tree->data == -572662307)
     {
         return -1;
     }
-    if (Tree->data == INT_MIN)
+    if (Tree->data == INT_MIN )
     {
         return 0;
     }
@@ -192,8 +200,12 @@ int TreeClear(CC_TREE *Tree)
         return -1;
     }
 
-    TreeDestroy(&Tree);
-    TreeCreate(&Tree);
+    if(Tree->left != NULL) TreeDestroy(&Tree->left);
+    if(Tree->right != NULL) TreeDestroy(&Tree->right);
+    
+    Tree->multiplicity = 0;
+    Tree->data = INT_MIN;
+    Tree->height = 0;
 
     if (NULL == Tree)
     {
@@ -278,7 +290,7 @@ int TreeGetNthPostorder(CC_TREE *Tree, int Index, int *Value)
 
 unsigned int CountingNodes(CC_TREE *Tree)
 {
-    unsigned int count = 1;
+    unsigned int count = Tree->multiplicity;
     if (Tree->left != NULL) {
         count += CountingNodes(Tree->left);
     }
@@ -308,7 +320,7 @@ CC_TREE * removeElement(CC_TREE *Tree, int Value)
             }
             else
             {
-                
+
                 if (Tree->right != NULL)
                 {
                     auxTree = Tree->right;
@@ -336,21 +348,28 @@ CC_TREE * removeElement(CC_TREE *Tree, int Value)
 }
 CC_TREE * insertElement(CC_TREE *Tree, int Value)
 {
-    if (Tree == NULL)
+    if (Tree == NULL || Tree->data == -572662307)
     {
         Tree = (CC_TREE*)malloc(sizeof(CC_TREE));
         Tree->data = Value;
         Tree->left = NULL;
         Tree->right = NULL;
+        Tree->multiplicity = 1;
         return Tree;
     }
     else if (Tree->data == INT_MIN)
     {
         Tree->data = Value;
+        Tree->multiplicity = 1;
         return (Tree);
     }
     else
     {
+        if (Tree->data == Value)
+        {
+            Tree->multiplicity += 1;
+            return Tree;
+        }
         if (Value > Tree->data)
         {
             Tree->right = insertElement(Tree->right, Value);
@@ -359,6 +378,25 @@ CC_TREE * insertElement(CC_TREE *Tree, int Value)
             if (Value < Tree->data)
             {
                 Tree->left = insertElement(Tree->left, Value);
+            }
+            else
+            {
+                if (Tree->right == NULL && Tree->left != NULL && Tree->left->data<Value)
+                {
+                    Tree->right = insertElement(Tree->right, Value);
+                }
+                else if (Tree->left == NULL && Tree->right != NULL && Tree->right->data > Value)
+                {
+                    Tree->left = insertElement(Tree->left, Value);
+                }
+                else
+                {
+                    if (Tree->right == NULL)
+                    {
+                        Tree->right = insertElement(Tree->right, Value);
+                    }
+                    Tree->left = insertElement(Tree->left, Value);
+                }
             }
     }
     Tree->height = TreeGetHeight(Tree);
@@ -416,4 +454,13 @@ void PostOrder(CC_TREE *Tree, int Index, int *Value, int *IndexPostOrder)
         return;
     }
     return;
+}
+CC_TREE * smallestRightNode(CC_TREE * Tree)
+{
+    CC_TREE *currentNode = Tree;
+    while (currentNode && currentNode->left != NULL)
+    {
+        currentNode = currentNode->left;
+    }
+    return currentNode;
 }

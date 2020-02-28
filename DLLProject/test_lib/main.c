@@ -118,6 +118,11 @@ int TestTree()
         goto cleanup;
     }
 
+    TreeInsert(usedTree, 20);
+    TreeInsert(usedTree, 10);
+    TreeInsert(usedTree, 20);
+    TreeInsert(usedTree, 20);
+    TreeRemove(usedTree, 20);
     int vector[] = { 13, 3, 4, 12, 14, 10, 5, 1, 8, 2, 7, 9, 11, 6, 18 };
     int usedValue = 0;
     for (int i = 0; i < 15; i++)

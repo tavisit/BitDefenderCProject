@@ -1,7 +1,9 @@
 #pragma once
+
 typedef struct _CC_TREE {
     // Members
     int data;
+    int multiplicity;
     struct _CC_TREE *left, *right;
     int height;
 } CC_TREE;
@@ -42,6 +44,7 @@ unsigned int CountingNodes(CC_TREE *Tree);
 //CC_TREE * functions to perform the removal of an element and the insertion of an element
 CC_TREE* removeElement(CC_TREE *T, int Value);
 CC_TREE* insertElement(CC_TREE *T, int Value);
+CC_TREE* smallestRightNode(CC_TREE* T);
 
 void PostOrder(CC_TREE *Tree, int Index, int *Value, int *IndexPostOrder);
 void InOrder(CC_TREE *Tree, int Index, int *Value, int *IndexInOrder);

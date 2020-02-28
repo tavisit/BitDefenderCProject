@@ -176,6 +176,7 @@ int StPushStack(CC_STACK *Stack, CC_STACK *StackToPush)
     {
         return -1;
     }
-    VecAppend(Stack->Vector, StackToPush->Vector);
-    return 0;
+    int retVal = VecAppend(Stack->Vector, StackToPush->Vector);
+    StClear(StackToPush);
+    return retVal;
 }
